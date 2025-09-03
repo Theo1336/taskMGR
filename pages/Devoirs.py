@@ -10,8 +10,6 @@ st.set_page_config(
     layout="wide"
 )
 
-
-
 st.markdown("""
     <style>
         div.stMarkdown h1 {
@@ -26,56 +24,41 @@ st.markdown("""
 
 # titre sous titre #
 
-st.markdown("<h1>Gérer l'ajout de vos devoirs à un seul endroit</h1>", unsafe_allow_html=True)
+st.markdown("<h1>Gérer l'ajout de vos devoirs à un seul endroit 📝</h1>", unsafe_allow_html=True)
 st.markdown("<h6>ici vous pouvez ajouter vos devoirs à votre agenda, consultable sur la page d'acceuil.</h6>", unsafe_allow_html=True)
 st.markdown("---")
 
 # formulaire #
 
-st.title("Ajouter un devoirs à votre agenda")
-
-
 with st.form("form_devoirs", clear_on_submit=True):
     st.write("Remplisser ces champs pour ajouter un devoirs: ")
-    st.text_input("Matière...")
-    st.text_area("Description...")
-    st.date_input("Devoir à faire pour le: ",  datetime.date(2025, 9, 1), format="DD/MM/YYYY")
-    
-    
-    st.markdown("---")
+    nom_matiere = st.text_input("Matière...", placeholder="nom de votre matière")
+    desc_matiere = st.text_area("Description...",  placeholder="ajoutez une description")
+    date_matiere = st.date_input("Devoir à faire pour le: ",  datetime.date(2025, 9, 1), format="DD/MM/YYYY")
 
-    st.write("maintenant estimons le temps que cela vous prendra, si cela prendra probablement plus d'une heure veuillez cocher la case.")
-    
+    options = ["5 min", "10 min", "15 min", "30 min", "45 min", "1h", "1h 30 min", "2h", "Plus de 2 h"]
+    choix = st.selectbox("Durée estimée :", options)
 
-
-    st.checkbox("une heure est nécessaire ou plus pour le terminer")
-    
-
-
-    
     st.markdown("---") 
     st.write("ajouter des tags: ")
-
     
     col1t, col2t, col3t, colt4 = st.columns(4)
     
     with col1t:
-        st.checkbox("DST")
-        
+        check1 = st.checkbox("DST")
     with col2t:
-        st.checkbox("TP")
-    
+        check2 =st.checkbox("TP")
     with col3t:
-        st.checkbox("Révision")
+        check3 = st.checkbox("Révision")
     with colt4:
-        st.checkbox("urgent 🚨")
+        check4 = st.checkbox("Urgent 🚨")
     
-
-    submitted = st.form_submit_button("ajouter")
+    submitted = st.form_submit_button("continuer")
+    
     
 # notifications en haut à droite #
  
-if submitted:
+if submitted:    
     st.toast("enregistrement du devoir en cours", icon="⌛")
     time.sleep(1.0)
     st.toast("Devoirs enregistré et ajouter avec succèss", icon='✅')

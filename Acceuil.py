@@ -7,8 +7,9 @@ import time
 st.set_page_config(
     page_title="Page Principale",
     page_icon="🏠",  
-    layout="wide" 
+    # layout="wide" 
 )
+
 
 
 st.markdown("""
