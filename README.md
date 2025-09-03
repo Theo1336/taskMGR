@@ -7,6 +7,7 @@ petite app de gestion de taches
 pour utiliser taskMGR:
 
 1 - cloner le repo
+
 2 - créer un environnement virtuel avec venv afin d'installer streamlit, placer vous dans le répertoir contenant le repo pour effectuer:
 
 	python -m venv venv
