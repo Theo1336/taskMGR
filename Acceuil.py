@@ -1,8 +1,29 @@
 import streamlit as st
 import datetime
 import time
+import sqlite3
+
+
+# mise en place bdd #
+
+con = sqlite3.connect("taskmgr.db")
+cur = con.cursor()
+
+cur.execute("""CREATE TABLE IF NOT EXISTS devoirs( 
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    matiere TEXT,
+    desc TEXT,
+    date TEXT,
+    duree TEXT,
+    tags TEXT  
+)""")
+
+con.commit()
+con.close()
+
 
 # Réglages page principal #
+
 
 st.set_page_config(
     page_title="Page Principale",

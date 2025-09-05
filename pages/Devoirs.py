@@ -2,10 +2,12 @@ import streamlit as st
 import datetime
 import time
 
-# réglages page principal #
+
+
+# réglages page devoirs #
 
 st.set_page_config(
-    page_title="Deuxième Page",
+    page_title="Devoirs",
     page_icon="📝",
     layout="wide"
 )
@@ -56,12 +58,18 @@ with st.form("form_devoirs", clear_on_submit=True):
     submitted = st.form_submit_button("continuer")
     
     
-# notifications en haut à droite #
+# notifications en haut à droite et avertissement en bas #
  
 if submitted:    
-    st.toast("enregistrement du devoir en cours", icon="⌛")
-    time.sleep(1.0)
-    st.toast("Devoirs enregistré et ajouter avec succèss", icon='✅')
+
+    if nom_matiere == "":
+        st.warning("Vous n'avez pas sppécifier de nom à la matière", icon="⚠️")
+    if desc_matiere == "":
+        st.warning("Il manque une déscription", icon="⚠️")
+    elif nom_matiere and desc_matiere:        
+        st.toast("enregistrement du devoir en cours", icon="⌛")
+        time.sleep(1.0)
+        st.toast("Devoirs enregistré et ajouter avec succèss", icon='✅')
 
 
     
