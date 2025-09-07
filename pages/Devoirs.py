@@ -1,8 +1,8 @@
 import streamlit as st
 import datetime
 import time
-
-
+import sqlite3
+import json
 
 # réglages page devoirs #
 
@@ -33,18 +33,19 @@ st.markdown("---")
 # formulaire #
 
 with st.form("form_devoirs", clear_on_submit=True):
-    st.write("Remplisser ces champs pour ajouter un devoirs: ")
+    st.write("Remplissez ces champs pour ajouter un devoirs: ")
     nom_matiere = st.text_input("Matière...", placeholder="nom de votre matière")
     desc_matiere = st.text_area("Description...",  placeholder="ajoutez une description")
     date_matiere = st.date_input("Devoir à faire pour le: ",  datetime.date(2025, 9, 1), format="DD/MM/YYYY")
 
     options = ["5 min", "10 min", "15 min", "30 min", "45 min", "1h", "1h 30 min", "2h", "Plus de 2 h"]
-    choix = st.selectbox("Durée estimée :", options)
+    choix_duree = st.selectbox("Durée estimée :", options)
 
     st.markdown("---") 
     st.write("ajouter des tags: ")
     
     col1t, col2t, col3t, colt4 = st.columns(4)
+
     
     with col1t:
         check1 = st.checkbox("DST")
@@ -54,22 +55,56 @@ with st.form("form_devoirs", clear_on_submit=True):
         check3 = st.checkbox("Révision")
     with colt4:
         check4 = st.checkbox("Urgent 🚨")
+        
+    tags = []
+    
+    tags = {
+        "DST": check1,
+        "TP": check2,
+        "Révision": check3,
+        "Urgent": check4
+    }
+    tags_json = json.dumps(tags)
+
     
     submitted = st.form_submit_button("continuer")
     
     
+# ajout bdd fontion #
+
+def test():
+    try:
+        con = sqlite3.connect("taskmgr.db")
+        cur = con.cursor()
+        date_str = date_matiere.isoformat()
+        cur.execute("INSERT INTO Devoirs (matiere, description_mat, date_mat, duree_mat, tags) VALUES (?, ?, ?, ?, ?)", (nom_matiere, desc_matiere, date_str, choix_duree, tags_json))
+        con.commit()
+        con.close()
+        return 0
+    except Exception as e:
+        st.error(f"Erreur SQL : {e}")
+        print(f"{e}")
+        return -1
+
 # notifications en haut à droite et avertissement en bas #
+# ajout à la base de données #
  
 if submitted:    
 
     if nom_matiere == "":
-        st.warning("Vous n'avez pas sppécifier de nom à la matière", icon="⚠️")
+        st.warning("Vous n'avez pas spécifié de nom pour la matière", icon="⚠️")
     if desc_matiere == "":
-        st.warning("Il manque une déscription", icon="⚠️")
+        st.warning("Il manque une description", icon="⚠️")
     elif nom_matiere and desc_matiere:        
-        st.toast("enregistrement du devoir en cours", icon="⌛")
+        st.toast("Enregistrement du devoir en cours...", icon="⌛")
+        res = test()       
         time.sleep(1.0)
-        st.toast("Devoirs enregistré et ajouter avec succèss", icon='✅')
+        if res == 0:
+            st.toast("Devoir enregistré et ajouté avec succès", icon='✅')
+        else:
+            st.toast("Un problème est survenu, réessayez plus tard", icon='❌')
+
+
 
 
     

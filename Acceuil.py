@@ -12,9 +12,9 @@ cur = con.cursor()
 cur.execute("""CREATE TABLE IF NOT EXISTS devoirs( 
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     matiere TEXT,
-    desc TEXT,
-    date TEXT,
-    duree TEXT,
+    description_mat TEXT,
+    date_mat TEXT,
+    duree_mat TEXT,
     tags TEXT  
 )""")
 
