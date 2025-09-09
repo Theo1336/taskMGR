@@ -52,32 +52,32 @@ with st.form("form_devoirs", clear_on_submit=True):
     with col2t:
         check2 =st.checkbox("TP")
     with col3t:
-        check3 = st.checkbox("Révision")
+        check3 = st.checkbox("Revision")
     with colt4:
-        check4 = st.checkbox("Urgent 🚨")
-        
-    tags = []
-    
-    tags = {
-        "DST": check1,
-        "TP": check2,
-        "Révision": check3,
-        "Urgent": check4
-    }
-    tags_json = json.dumps(tags)
+        check4 = st.checkbox("Urgent") 
 
-    
+    tags = []
+    if check1:
+        tags.append("DST")
+    if check2:
+        tags.append("TP")
+    if check3:
+        tags.append("Révision")
+    if check4:
+        tags.append("Urgent 🚨")
+
     submitted = st.form_submit_button("continuer")
     
     
 # ajout bdd fontion #
 
-def test():
+def ajout_bdd():
     try:
         con = sqlite3.connect("taskmgr.db")
         cur = con.cursor()
         date_str = date_matiere.isoformat()
-        cur.execute("INSERT INTO Devoirs (matiere, description_mat, date_mat, duree_mat, tags) VALUES (?, ?, ?, ?, ?)", (nom_matiere, desc_matiere, date_str, choix_duree, tags_json))
+        tags_text = ", ".join(tags)
+        cur.execute("INSERT INTO Devoirs (matiere, description_mat, date_mat, duree_mat, tags) VALUES (?, ?, ?, ?, ?)", (nom_matiere, desc_matiere, date_str, choix_duree, tags_text))
         con.commit()
         con.close()
         return 0
@@ -97,7 +97,7 @@ if submitted:
         st.warning("Il manque une description", icon="⚠️")
     elif nom_matiere and desc_matiere:        
         st.toast("Enregistrement du devoir en cours...", icon="⌛")
-        res = test()       
+        res = ajout_bdd()       
         time.sleep(1.0)
         if res == 0:
             st.toast("Devoir enregistré et ajouté avec succès", icon='✅')

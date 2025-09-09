@@ -1,8 +1,7 @@
 import streamlit as st
-import datetime
-import time
 import sqlite3
-
+import pandas as pd
+import json
 
 # mise en place bdd #
 
@@ -19,7 +18,7 @@ cur.execute("""CREATE TABLE IF NOT EXISTS devoirs(
 )""")
 
 con.commit()
-con.close()
+
 
 
 # Réglages page principal #
@@ -51,3 +50,14 @@ st.markdown("<h1>Bienvenue sur Task Manager👋</h1>", unsafe_allow_html=True)
 st.markdown("<h6>vous retrouverez ici le menu principal, ainsi que votre agenda.</h6>", unsafe_allow_html=True)
 st.markdown("---")
 
+
+# ajout à l'agenda #
+
+nombre = 0
+df = pd.read_sql_query("""
+    SELECT matiere, description_mat, date_mat, duree_mat, tags
+    FROM devoirs""", con)
+con.close()
+
+
+st.dataframe(df)
