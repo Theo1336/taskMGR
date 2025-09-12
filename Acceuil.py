@@ -3,6 +3,7 @@ import sqlite3
 import pandas as pd
 import json
 
+
 # mise en place bdd #
 
 con = sqlite3.connect("taskmgr.db")
@@ -52,12 +53,48 @@ st.markdown("---")
 
 
 # ajout à l'agenda #
-
-nombre = 0
 df = pd.read_sql_query("""
-    SELECT matiere, description_mat, date_mat, duree_mat, tags
-    FROM devoirs""", con)
+    SELECT id, matiere, description_mat, date_mat, duree_mat, tags
+    FROM devoirs
+""", con)
+
+df["finit"] = False
+df_edit = st.data_editor(df, hide_index=True)
+
+
+btn = st.button("supprimer la sélection", type="primary")
+btnac = st.button("actualiser")
+
+
+# suppression #
+def supp():
+    finis = df_edit[df_edit["finit"] == True]
+
+    for _, row in finis.iterrows():
+        id_bdd = row["id"]
+
+        # Vérification avant suppression
+        cur.execute("SELECT matiere FROM devoirs WHERE id=?", (id_bdd,))
+        if cur.fetchone() == None:
+            st.toast("Un problème est survenu, réessayez plus tard", icon='❌')
+            
+
+        # Suppression en BDD
+        cur.execute("DELETE FROM devoirs WHERE id=?", (id_bdd,))
+        st.toast(f"Ligne avec {id_bdd} à été supprimé 🗑️")
+
+    con.commit()
+
+    df = pd.read_sql_query("""
+        SELECT id, matiere, description_mat, date_mat, duree_mat, tags
+        FROM devoirs
+    """, con)
+    df["finit"] = False
+
+if btn:
+    supp()
+
+
+
+
 con.close()
-
-
-st.dataframe(df)
