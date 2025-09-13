@@ -70,6 +70,8 @@ if btnac:
     st.toast("Actualisation en cours 🔄")
     time.sleep(0.3)
     st.toast("Actualisation réussie ✅")
+    time.sleep(0.3)
+    st.rerun()
     
 
 # suppression #
@@ -100,6 +102,7 @@ def supp():
         FROM devoirs
     """, con)
     df["finit"] = False
+    st.rerun()
 
 if btn:
     supp()
