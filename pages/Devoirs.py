@@ -58,13 +58,16 @@ with st.form("form_devoirs", clear_on_submit=True):
 
     tags = []
     if check1:
-        tags.append("DST")
+        tags.append("DST 📑")
     if check2:
-        tags.append("TP")
+        tags.append("TP ✒️")
     if check3:
-        tags.append("Révision")
+        tags.append("Révision 📖")
     if check4:
         tags.append("Urgent 🚨")
+        
+    for tag in tags:
+        st.markdown(f":violet-badge[{tag}] ", unsafe_allow_html=True)
 
     submitted = st.form_submit_button("💾 Sauvegarder")
     
@@ -101,6 +104,7 @@ if submitted:
         time.sleep(1.0)
         if res == 0:
             st.toast("Devoir enregistré et ajouté avec succès", icon='✅')
+            st.badge("Success", icon=":material/check:", color="green")
         else:
             st.toast("Un problème est survenu, réessayez plus tard", icon='❌')
 

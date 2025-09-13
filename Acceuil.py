@@ -1,6 +1,7 @@
 import streamlit as st
 import sqlite3
 import pandas as pd
+import time
 
 
 
@@ -65,10 +66,19 @@ df_edit = st.data_editor(df, hide_index=True, column_config={"id": None})
 btn = st.button("🗑️ supprimer la sélection", type="primary")
 btnac = st.button("🔄 actualiser")
 
+if btnac:
+    st.toast("Actualisation en cours 🔄")
+    time.sleep(0.3)
+    st.toast("Actualisation réussie ✅")
+    
 
 # suppression #
 def supp():
     finis = df_edit[df_edit["finit"] == True]
+    
+    if finis.empty:
+        st.toast("vous n'avez rien séléctionner ❌")
+
 
     for _, row in finis.iterrows():
         id_bdd = row["id"]
@@ -98,3 +108,4 @@ if btn:
 
 
 con.close()
+
