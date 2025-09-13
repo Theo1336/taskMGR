@@ -1,7 +1,7 @@
 import streamlit as st
 import sqlite3
 import pandas as pd
-import json
+
 
 
 # mise en place bdd #
@@ -59,11 +59,11 @@ df = pd.read_sql_query("""
 """, con)
 
 df["finit"] = False
-df_edit = st.data_editor(df, hide_index=True)
+df_edit = st.data_editor(df, hide_index=True, column_config={"id": None})
 
 
-btn = st.button("supprimer la sélection", type="primary")
-btnac = st.button("actualiser")
+btn = st.button("🗑️ supprimer la sélection", type="primary")
+btnac = st.button("🔄 actualiser")
 
 
 # suppression #
@@ -81,7 +81,7 @@ def supp():
 
         # Suppression en BDD
         cur.execute("DELETE FROM devoirs WHERE id=?", (id_bdd,))
-        st.toast(f"Ligne avec {id_bdd} à été supprimé 🗑️")
+        st.toast(f"Ligne supprimé 🗑️")
 
     con.commit()
 

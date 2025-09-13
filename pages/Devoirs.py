@@ -2,7 +2,7 @@ import streamlit as st
 import datetime
 import time
 import sqlite3
-import json
+
 
 # réglages page devoirs #
 
@@ -66,7 +66,7 @@ with st.form("form_devoirs", clear_on_submit=True):
     if check4:
         tags.append("Urgent 🚨")
 
-    submitted = st.form_submit_button("continuer")
+    submitted = st.form_submit_button("💾 Sauvegarder")
     
     
 # ajout bdd fontion #
