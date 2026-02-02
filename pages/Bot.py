@@ -60,7 +60,9 @@ if prompt:
         st.markdown(user_text)
 
     # Envoyer tout l’historique à Ollama
-    response = chat(model="mistral", messages=st.session_state.messages)
+    #response = chat(model="mistral", messages=st.session_state.messages)
+    response = chat(model="llama3:8b", messages=st.session_state.messages)
+
 
     # Récupérer la réponse
     ai_msg = response["message"]["content"]

@@ -22,3 +22,6 @@ pour utiliser taskMGR:
 
 	$ pip install streamlit
 
+4 - streamlit run Acceuil.py
+
+5 - avoir mis le mdele mistral ou llama3:8b avec ollama pour que le bot foncitonne
